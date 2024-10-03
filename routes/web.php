@@ -14,8 +14,18 @@ Route::get('/test/{nombre}', function($nombre){
 
 Route::get('/tareas', [
     TareaController::class,
-    'mostrarTodas'
-]);
+    'index'
+])->name('tareas.index');
+
+Route::get('/tareas/create', [
+    TareaController::class,
+    'create'
+])->name('tareas.create');
+
+Route::post('/tareas', [
+    TareaController::class,
+    'store'
+])->name('tareas.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
