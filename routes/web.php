@@ -3,13 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\MascotaController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/test/{nombre}', function($nombre){
-    return "Hola, {$nombre}";
 });
 
 Route::get('/tareas', [
@@ -26,6 +23,9 @@ Route::post('/tareas', [
     TareaController::class,
     'store'
 ])->name('tareas.store');
+
+//Rutas para controlador de recurso de las mascotas.
+Route::resource('/mascotas', MascotaController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
