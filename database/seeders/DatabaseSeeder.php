@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
         ]);
 
-        Mascota::factory(100)->create();
+        Mascota::factory(1000)->create();
 
     }
 }
