@@ -14,6 +14,7 @@ class MascotaController extends Controller
     public function index()
     {
         $mascotas = Mascota::select('id', 'nombre', 'fecha_nacimiento', 'categoria_id')
+            ->where('is_visible', true)
             ->orderBy('id', 'desc')
             ->paginate(10);
         return view('mascotas.index', compact('mascotas'));
@@ -41,7 +42,7 @@ class MascotaController extends Controller
             'descripcion' => 'required'
         ]);
 
-        Mascota::create([
+        $mascota = Mascota::create([
             'nombre' => $request->nombre,
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'categoria_id' => $request->categoria_id,
@@ -59,7 +60,7 @@ class MascotaController extends Controller
      */
     public function show(Mascota $mascota)
     {
-        //
+        return view('mascotas.show', compact('mascota'));
     }
 
     /**
@@ -67,15 +68,34 @@ class MascotaController extends Controller
      */
     public function edit(Mascota $mascota)
     {
-        //
+        $categorias = Categoria::select('id', 'nombre')->orderBy('nombre')->get();
+        return view('mascotas.edit', compact('categorias', 'mascota'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Mascota $mascota)
-    {
-        //
+    {        
+
+        $request->validate([
+            'nombre' => 'required',
+            'fecha_nacimiento' => 'required|date|before:tomorrow',
+            'categoria_id' => 'required',
+            'descripcion' => 'required'
+        ]);
+
+        $mascota->update([
+            'nombre' => $request->nombre,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
+            'categoria_id' => $request->categoria_id,
+            'descripcion' => $request->descripcion
+        ]);
+
+        return redirect()
+            ->route('mascotas.show', $mascota)
+            ->with('status', 'La mascota se ha modificado correctamente');
+
     }
 
     /**
@@ -83,6 +103,18 @@ class MascotaController extends Controller
      */
     public function destroy(Mascota $mascota)
     {
-        //
+        
+        //Eliminado físico.
+        //$mascota->delete();
+
+        //Eliminado lógico.
+        $mascota->update([
+            'is_visible' => false
+        ]);
+
+        return redirect()
+            ->route('mascotas.index')
+            ->with('status', 'La mascota se ha eliminado correctamente');
+
     }
 }

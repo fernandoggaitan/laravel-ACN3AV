@@ -47,8 +47,7 @@
                         </th>
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <x-btn-primary href=""> Gestionar
-                            </x-btn-primary>
+                            <x-btn-primary href="{{ route('mascotas.show', $mascota) }}"> Gestionar </x-btn-primary>
                         </th>
                     </tr>
                 @endforeach
