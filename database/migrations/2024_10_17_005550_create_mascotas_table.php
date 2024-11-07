@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->foreignId('categoria_id')->constrained();
             $table->boolean('is_visible')->default(true);
+            $table->string('imagen')->nullable(true)->default(null);
             $table->timestamps();
         });
     }

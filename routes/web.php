@@ -24,8 +24,12 @@ Route::post('/tareas', [
     'store'
 ])->name('tareas.store');
 
-//Rutas para controlador de recurso de las mascotas.
-Route::resource('/mascotas', MascotaController::class);
+
+//Rutas donde el usuario tiene que ser administrador.
+Route::middleware(['auth', 'verified', 'is_admin'])->group(function(){
+    //Rutas para controlador de recurso de las mascotas.
+    Route::resource('/mascotas', MascotaController::class);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

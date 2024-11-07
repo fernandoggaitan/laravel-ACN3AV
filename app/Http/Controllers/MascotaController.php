@@ -25,6 +25,7 @@ class MascotaController extends Controller
      */
     public function create()
     {
+
         $categorias = Categoria::select('id', 'nombre')->orderBy('nombre')->get();
         return view('mascotas.create', compact('categorias'));
     }
@@ -39,14 +40,19 @@ class MascotaController extends Controller
             'nombre' => 'required',
             'fecha_nacimiento' => 'required|date|before:tomorrow',
             'categoria_id' => 'required',
-            'descripcion' => 'required'
+            'descripcion' => 'required',
+            'imagen' => 'required|mimes:jpg,png'
         ]);
+
+        $imagen_nombre = time() . $request->file('imagen')->getClientOriginalName();
+        $imagen = $request->file('imagen')->storeAs('mascotas', $imagen_nombre, 'public');
 
         $mascota = Mascota::create([
             'nombre' => $request->nombre,
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'categoria_id' => $request->categoria_id,
-            'descripcion' => $request->descripcion
+            'descripcion' => $request->descripcion,
+            'imagen' => $imagen
         ]);
 
         return redirect()

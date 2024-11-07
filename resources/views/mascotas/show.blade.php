@@ -9,6 +9,12 @@
     @endif
 
     <div class="mb-3">
+        @if ($mascota->imagen)
+            <img src="{{ asset('storage/' . $mascota->imagen) }}" alt="{{ $mascota->nombre }}" class="max-w-36" />
+        @endif
+    </div>
+
+    <div class="mb-3">
         {{ $mascota->descripcion }}
     </div>
 
