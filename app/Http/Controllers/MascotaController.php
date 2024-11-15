@@ -5,19 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Mascota;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use Illuminate\Database\Eloquent\Builder;
 
 class MascotaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $buscador = $request->buscador;
+
         $mascotas = Mascota::select('id', 'nombre', 'fecha_nacimiento', 'categoria_id')
+            ->when($buscador, function(Builder $query, $buscador){
+                $query->where('nombre', 'like', "%{$buscador}%");
+                $query->orWhere('descripcion', 'like', "%{$buscador}%");
+            })
             ->where('is_visible', true)
-            ->orderBy('id', 'desc')
+            ->orderBy('nombre')
             ->paginate(10);
-        return view('mascotas.index', compact('mascotas'));
+
+        return view('mascotas.index', compact('mascotas', 'buscador'));
     }
 
     /**

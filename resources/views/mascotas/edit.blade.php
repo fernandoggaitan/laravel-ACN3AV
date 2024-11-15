@@ -3,13 +3,13 @@
     <x-h1> {{ $mascota->nombre }} </x-h1>
 
     @if ($errors->any())
-        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <x-alert-danger>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>
+        </x-alert-danger>
     @endif
 
     <form class="mx-auto" action="{{ route('mascotas.update', $mascota) }}" method="POST">
@@ -41,7 +41,7 @@
             </div>
             <div>
                 <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"> Modificar mascota </button>
-                <x-btn-primary href="{{ route('mascotas.index') }}"> Volver </x-btn-primary>
+                <x-btn-primary href="{{ route('mascotas.show', $mascota) }}"> Volver </x-btn-primary>
             </div>
         </div>
     </form>
